@@ -13,6 +13,19 @@ class Query extends StatefulWidget {
 class _QueryState extends State<Query> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
   List<Clientt> list = [];
+  TextEditingController txtCity = TextEditingController();
+
+  listAll() async {
+    List<Clientt> clients = await AccessApi().listClients();
+    setState(() {
+      list = clients;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    listAll();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +33,8 @@ class _QueryState extends State<Query> {
       Navigator.of(context).pushReplacementNamed('/home');
     }
 
-    listAll() async {
-      List<Clientt> clients = await AccessApi().listClients();
+    listClientsByCity() async {
+      List<Clientt> clients = await AccessApi().listClientsByCity(txtCity.text);
       setState(() {
         list = clients;
       });
@@ -33,7 +46,7 @@ class _QueryState extends State<Query> {
     }
 
     editClient(Clientt c) {
-      Navigator.of(context).pushReplacementNamed('/cadastro',arguments: c);
+      Navigator.of(context).pushReplacementNamed('/cadastro', arguments: c);
     }
 
     return Scaffold(
@@ -44,6 +57,10 @@ class _QueryState extends State<Query> {
             children: [
               Components()
                   .createButton(formController, listAll, "Listar todos"),
+              Components().createButton(
+                  formController, listClientsByCity, "Listar por cidade"),
+              Components().createTextInput(
+                  TextInputType.text, "Cidade", txtCity, "Informe a cidade"),
               Expanded(
                   child: Container(
                 child: ListView.builder(

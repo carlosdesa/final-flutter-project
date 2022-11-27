@@ -46,7 +46,7 @@ class Components {
         style: const TextStyle(fontSize: 30),
         controller: controller,
         validator: (value) {
-          if (value!.isEmpty) {
+          if (label != 'Uf' && label != 'Cidade' && value!.isEmpty) {
             return validationMessage;
           }
         },

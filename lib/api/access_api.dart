@@ -32,6 +32,16 @@ class AccessApi {
     return cities;
   }
 
+  Future<List<Clientt>> listClientsByCity(String city) async {
+    String url = "http://localhost:8080/clientes/busca-por-cidade/$city";
+    Response response = await get(Uri.parse(url));
+    String formattedJsonUtf8 = (utf8.decode(response.bodyBytes));
+    Iterable i = json.decode(formattedJsonUtf8);
+    List<Clientt> clients =
+        List<Clientt>.from(i.map((c) => Clientt.fromJson(c)));
+    return clients;
+  }
+
   Future<void> insertClient(Map<String, dynamic> client) async {
     String url = "http://localhost:8080/clientes";
     Map<String, String> headers = {
