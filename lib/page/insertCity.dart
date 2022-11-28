@@ -26,7 +26,6 @@ class _InsertCityState extends State<InsertCity> {
         txtUf.text = args.uf;
       }
     }
-    print(args is City);
 
     register() {
       City c = City(0, txtCity.text, txtUf.text);
@@ -50,18 +49,19 @@ class _InsertCityState extends State<InsertCity> {
           key: formController,
           child: Column(
             children: [
-              if (args is !City) ...[
+              if (args is! City) ...[
                 Components().createTextInput(
                     TextInputType.text, "Cidade", txtCity, "Informe a cidade"),
                 Components().createTextInput(
-                    TextInputType.number, "UF", txtUf, "Informe a uf"),
+                    TextInputType.text
+                    , "UF", txtUf, "Informe a uf"),
                 Components().createButton(formController, register, "cadastrar")
               ] else ...[
                 Components().createTextInput(
                     TextInputType.text, "Cidade", txtCity, "Informe a cidade"),
                 Components().createTextInput(
-                    TextInputType.number, "UF", txtUf, "Informe a uf"),
-                Components().createButton(formController, edit, "editar")
+                    TextInputType.text, "UF", txtUf, "Informe a uf"),
+                Components().createButton(formController, edit, "Atualizar")
               ]
             ],
           )),

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-enum genderEnum { masculino, feminino }
+enum GenderEnum { masculino, feminino }
 
 class GenderRadioOptions extends StatefulWidget {
-  TextEditingController? controller;
+  final TextEditingController? controller;
 
-  GenderRadioOptions({Key? key, this.controller}) : super(key: key);
+  const GenderRadioOptions({Key? key, this.controller}) : super(key: key);
 
   @override
   State<GenderRadioOptions> createState() => _GenderRadioOptionsState();
 }
 
 class _GenderRadioOptionsState extends State<GenderRadioOptions> {
-  genderEnum? _choice = genderEnum.masculino;
+  GenderEnum? _choice = GenderEnum.masculino;
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +21,10 @@ class _GenderRadioOptionsState extends State<GenderRadioOptions> {
         Expanded(
           child: ListTile(
             title: const Text('Masculino'),
-            leading: Radio<genderEnum>(
-              value: genderEnum.masculino,
+            leading: Radio<GenderEnum>(
+              value: GenderEnum.masculino,
               groupValue: _choice,
-              onChanged: (genderEnum? value) {
+              onChanged: (GenderEnum? value) {
                 setState(() {
                   _choice = value;
                   widget.controller?.text = 'M';
@@ -36,10 +36,10 @@ class _GenderRadioOptionsState extends State<GenderRadioOptions> {
         Expanded(
           child: ListTile(
             title: const Text('Feminino'),
-            leading: Radio<genderEnum>(
-              value: genderEnum.feminino,
+            leading: Radio<GenderEnum>(
+              value: GenderEnum.feminino,
               groupValue: _choice,
-              onChanged: (genderEnum? value) {
+              onChanged: (GenderEnum? value) {
                 setState(() {
                   _choice = value;
                   widget.controller?.text = 'F';

@@ -14,6 +14,7 @@ class _CityListState extends State<CityList> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
   TextEditingController txtUf = TextEditingController();
   List<City> list = [];
+  bool checkSpecialField = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +30,55 @@ class _CityListState extends State<CityList> {
     }
 
     listCityByUf() async {
-      List<City> cities = await AccessApi().listCitiesByUf(txtUf.text);
-      setState(() {
-        list = cities;
-      });
+      if (txtUf.text != '') {
+        List<City> cities = await AccessApi().listCitiesByUf(txtUf.text);
+        setState(() {
+          list = cities;
+        });
+      }
+    }
+
+    alert(String responseMessage) async {
+      await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Erro!'),
+          content: Text(responseMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => {
+                Navigator.pop(context, 'OK'),
+              },
+              child: const Text('Ok'),
+            ),
+          ],
+        ),
+      );
     }
 
     deleteCity(String id) async {
-      await AccessApi().deleteCity(id);
+      String responseMessage = await AccessApi().deleteCity(id);
+      if (responseMessage.length > 0) {
+        await alert(responseMessage);
+      }
       await listAll();
     }
 
     editCity(City c) {
       Navigator.of(context)
           .pushReplacementNamed('/cadastra-cidade', arguments: c);
+    }
+
+    notifyChange(String value) {
+      if (value != '') {
+        setState(() {
+          checkSpecialField = true;
+        });
+      } else {
+        setState(() {
+          checkSpecialField = false;
+        });
+      }
     }
 
     return Scaffold(
@@ -53,10 +89,21 @@ class _CityListState extends State<CityList> {
             children: [
               Components()
                   .createButton(formController, listAll, "Listar todos"),
-              Components().createButton(
-                  formController, listCityByUf, "Listar cidade por uf"),
-              Components().createTextInput(
-                  TextInputType.text, "Uf", txtUf, "Informe o estado"),
+              Row(
+                children: [
+                  Expanded(
+                      child: Components().createDynamicTextInput(
+                          TextInputType.text,
+                          "Estado",
+                          txtUf,
+                          "Informe o estado",
+                          notifyChange)),
+                  Expanded(
+                    child: Components().createDynamicButton(formController,
+                        listCityByUf, "Listar por uf", checkSpecialField),
+                  ),
+                ],
+              ),
               Expanded(
                   child: Container(
                 child: ListView.builder(
@@ -65,8 +112,8 @@ class _CityListState extends State<CityList> {
                     return Card(
                       elevation: 6,
                       margin: const EdgeInsets.all(20),
-                      child: Components()
-                          .createItemCity(list[index], editCity, deleteCity),
+                      child: Components().createItemCity(
+                          list[index], editCity, deleteCity, context),
                     );
                   },
                 ),

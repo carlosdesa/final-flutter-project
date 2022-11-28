@@ -54,6 +54,31 @@ class Components {
     );
   }
 
+  createDynamicTextInput(
+      keyboardType, label, controller, validationMessage, notifyChange) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        onChanged: ((value) => notifyChange(value)),
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        textAlign: TextAlign.left,
+        style: const TextStyle(fontSize: 18),
+        controller: controller,
+        validator: (value) {
+          if (label != 'Estado' && label != 'Cidade' && value!.isEmpty) {
+            return validationMessage;
+          }
+        },
+      ),
+    );
+  }
+
   createButton(controller, func, title) {
     return Row(
       children: [
@@ -81,6 +106,32 @@ class Components {
               ),
             ))
       ],
+    );
+  }
+
+  createDynamicButton(controller, func, title, condition) {
+    enabled() {
+      if (controller.currentState!.validate()) {
+        func();
+      }
+    }
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+      height: 60,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.black,
+        ),
+        onPressed: condition ? enabled : null,
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
     );
   }
 
@@ -118,7 +169,7 @@ class Components {
         ));
   }
 
-  createItemCity(City c, funcEd, funcDel) {
+  createItemCity(City c, funcEd, funcDel, context) {
     return ListTile(
         minVerticalPadding: 20,
         title: createText("${c.id}"),
@@ -136,9 +187,28 @@ class Components {
                       },
                       icon: Icon(Icons.edit, size: 14)),
                   IconButton(
-                      onPressed: () {
-                        funcDel("${c.id}");
-                      },
+                      onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Remover item'),
+                              content: Text(
+                                  'Você deseja remover a cidade de ${c.name} ?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancelar'),
+                                  child: const Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => {
+                                    Navigator.pop(context, 'OK'),
+                                    funcDel("${c.id}")
+                                  },
+                                  child: const Text('Sim'),
+                                ),
+                              ],
+                            ),
+                          ),
                       icon: Icon(Icons.delete, size: 14)), // icon-2
                 ],
               ),

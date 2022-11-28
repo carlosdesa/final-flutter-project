@@ -32,7 +32,6 @@ class _RegistrationState extends State<Registration> {
         txtCity.text = "${args.city.id}";
       }
     }
-    print(args is Clientt);
 
     register() {
       Clientt c = Clientt(0, txtName.text, txtGender.text,
@@ -58,7 +57,7 @@ class _RegistrationState extends State<Registration> {
           key: formController,
           child: Column(
             children: [
-              if (args is !Clientt) ...[
+              if (args is! Clientt) ...[
                 Components().createTextInput(
                     TextInputType.text, "Nome", txtName, "Informe o nome"),
                 Components().createTextInput(
@@ -73,7 +72,7 @@ class _RegistrationState extends State<Registration> {
                     TextInputType.number, "Idade", txtAge, "Informe a idade"),
                 Center(child: GenderRadioOptions(controller: txtGender)),
                 Center(child: ComboBoxCity(controller: txtCity)),
-                Components().createButton(formController, edit, "editar")
+                Components().createButton(formController, edit, "Atualizar")
               ]
             ],
           )),

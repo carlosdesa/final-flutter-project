@@ -14,6 +14,7 @@ class _QueryState extends State<Query> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
   List<Clientt> list = [];
   TextEditingController txtCity = TextEditingController();
+  bool checkSpecialField = false;
 
   listAll() async {
     List<Clientt> clients = await AccessApi().listClients();
@@ -34,15 +35,30 @@ class _QueryState extends State<Query> {
     }
 
     listClientsByCity() async {
-      List<Clientt> clients = await AccessApi().listClientsByCity(txtCity.text);
-      setState(() {
-        list = clients;
-      });
+      if (txtCity.text != '') {
+        List<Clientt> clients =
+            await AccessApi().listClientsByCity(txtCity.text);
+        setState(() {
+          list = clients;
+        });
+      }
     }
 
     deleteClient(String id) async {
       await AccessApi().deleteClient(id);
       await listAll();
+    }
+
+    notifyChange(String value) {
+      if (value != '') {
+        setState(() {
+          checkSpecialField = true;
+        });
+      } else {
+        setState(() {
+          checkSpecialField = false;
+        });
+      }
     }
 
     editClient(Clientt c) {
@@ -57,10 +73,24 @@ class _QueryState extends State<Query> {
             children: [
               Components()
                   .createButton(formController, listAll, "Listar todos"),
-              Components().createButton(
-                  formController, listClientsByCity, "Listar por cidade"),
-              Components().createTextInput(
-                  TextInputType.text, "Cidade", txtCity, "Informe a cidade"),
+              Row(
+                children: [
+                  Expanded(
+                      child: Components().createDynamicTextInput(
+                          TextInputType.text,
+                          "Cidade",
+                          txtCity,
+                          "Informe a cidade",
+                          notifyChange)),
+                  Expanded(
+                    child: Components().createDynamicButton(
+                        formController,
+                        listClientsByCity,
+                        "Listar por cidade",
+                        checkSpecialField),
+                  )
+                ],
+              ),
               Expanded(
                   child: Container(
                 child: ListView.builder(
