@@ -18,11 +18,11 @@ class _HomeState extends State<Home> {
     }
 
     registration() {
-      Navigator.of(context).pushReplacementNamed('/cadastro');
+      Navigator.of(context).pushReplacementNamed('/cadastrar-cliente');
     }
 
     query() {
-      Navigator.of(context).pushReplacementNamed('/consulta');
+      Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
     }
 
     insertCity() {
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
     }
 
     listCities() {
-      Navigator.of(context).pushReplacementNamed('/lista-cidades');
+      Navigator.of(context).pushReplacementNamed('/lista-de-cidades');
     }
 
     return Scaffold(

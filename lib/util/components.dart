@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fullstack/model/city.dart';
+import 'package:fullstack/model/city_model.dart';
 
-import '../model/clientt.dart';
+import '../model/client_model.dart';
 
 class Components {
   createAppBar(text, action) {
@@ -100,7 +100,7 @@ class Components {
                   title,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 20.0,
+                    fontSize: 14.0,
                   ),
                 ),
               ),
@@ -128,19 +128,19 @@ class Components {
           title,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 20.0,
+            fontSize: 14.0,
           ),
         ),
       ),
     );
   }
 
-  createItemClient(Clientt c, funcEd, funcDel) {
+  createItemClient(ClientModel c, funcEd, funcDel, context) {
     String gender = c.gender == 'M' ? 'Masculino' : 'Feminino';
     return ListTile(
         minVerticalPadding: 20,
         title: createText("${c.id} - ${c.name}"),
-        subtitle: createText("${c.age} anos - (${c.gender})"),
+        subtitle: createText("${c.age} anos - ($gender)"),
         trailing: Column(
           children: [
             Expanded(
@@ -156,12 +156,36 @@ class Components {
                       onPressed: () {
                         funcEd(c);
                       },
-                      icon: Icon(Icons.edit, size: 14)),
+                      icon: const Icon(Icons.edit, size: 14)),
+                  // IconButton(
+                  //     onPressed: () {
+                  //       funcDel("${c.id}");
+                  //     },
+                  //     icon: const Icon(Icons.delete, size: 14)), // icon-2
                   IconButton(
-                      onPressed: () {
-                        funcDel("${c.id}");
-                      },
-                      icon: Icon(Icons.delete, size: 14)), // icon-2
+                      onPressed: () => showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Remover item'),
+                              content: Text(
+                                  'Você deseja remover o cliente ${c.name} ?'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, 'Cancelar'),
+                                  child: const Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () => {
+                                    Navigator.pop(context, 'OK'),
+                                    funcDel("${c.id}")
+                                  },
+                                  child: const Text('Sim'),
+                                ),
+                              ],
+                            ),
+                          ),
+                      icon: const Icon(Icons.delete, size: 14)), // icon-2
                 ],
               ),
             ),
@@ -169,7 +193,7 @@ class Components {
         ));
   }
 
-  createItemCity(City c, funcEd, funcDel, context) {
+  createItemCity(CityModel c, funcEd, funcDel, context) {
     return ListTile(
         minVerticalPadding: 20,
         title: createText("${c.id}"),
@@ -185,7 +209,7 @@ class Components {
                       onPressed: () {
                         funcEd(c);
                       },
-                      icon: Icon(Icons.edit, size: 14)),
+                      icon: const Icon(Icons.edit, size: 14)),
                   IconButton(
                       onPressed: () => showDialog<String>(
                             context: context,
@@ -209,7 +233,7 @@ class Components {
                               ],
                             ),
                           ),
-                      icon: Icon(Icons.delete, size: 14)), // icon-2
+                      icon: const Icon(Icons.delete, size: 14)), // icon-2
                 ],
               ),
             ),

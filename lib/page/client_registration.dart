@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fullstack/api/access_api.dart';
-import 'package:fullstack/model/city.dart';
-import 'package:fullstack/model/clientt.dart';
+import 'package:fullstack/model/city_model.dart';
+import 'package:fullstack/model/client_model.dart';
 import 'package:fullstack/util/combobox_city.dart';
 import 'package:fullstack/util/components.dart';
 import 'package:fullstack/util/gender_radio_options.dart';
 
-class Registration extends StatefulWidget {
-  const Registration({Key? key}) : super(key: key);
+class ClientRegistration extends StatefulWidget {
+  const ClientRegistration({Key? key}) : super(key: key);
 
   @override
-  State<Registration> createState() => _RegistrationState();
+  State<ClientRegistration> createState() => _ClientRegistrationState();
 }
 
-class _RegistrationState extends State<Registration> {
+class _ClientRegistrationState extends State<ClientRegistration> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
   TextEditingController txtName = TextEditingController();
   TextEditingController txtGender = TextEditingController(text: 'M');
@@ -24,7 +24,7 @@ class _RegistrationState extends State<Registration> {
   Widget build(BuildContext context) {
     dynamic args = {};
     if (ModalRoute.of(context)?.settings.arguments != null) {
-      args = ModalRoute.of(context)?.settings.arguments as Clientt;
+      args = ModalRoute.of(context)?.settings.arguments as ClientModel;
       if (args.id > -1) {
         txtName.text = args.name;
         txtGender.text = args.gender;
@@ -34,17 +34,17 @@ class _RegistrationState extends State<Registration> {
     }
 
     register() {
-      Clientt c = Clientt(0, txtName.text, txtGender.text,
-          int.parse(txtAge.text), City(int.parse(txtCity.text), "", ""));
+      ClientModel c = ClientModel(0, txtName.text, txtGender.text,
+          int.parse(txtAge.text), CityModel(int.parse(txtCity.text), "", ""));
       AccessApi().insertClient(c.toJson());
-      Navigator.of(context).pushReplacementNamed('/consulta');
+      Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
     }
 
     edit() {
-      Clientt c = Clientt(args.id, txtName.text, txtGender.text,
-          int.parse(txtAge.text), City(int.parse(txtCity.text), "", ""));
+      ClientModel c = ClientModel(args.id, txtName.text, txtGender.text,
+          int.parse(txtAge.text), CityModel(int.parse(txtCity.text), "", ""));
       AccessApi().editClient(c.toJson(), "${c.id}");
-      Navigator.of(context).pushReplacementNamed('/consulta');
+      Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
     }
 
     home() {
@@ -57,7 +57,7 @@ class _RegistrationState extends State<Registration> {
           key: formController,
           child: Column(
             children: [
-              if (args is! Clientt) ...[
+              if (args is! ClientModel) ...[
                 Components().createTextInput(
                     TextInputType.text, "Nome", txtName, "Informe o nome"),
                 Components().createTextInput(

@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fullstack/api/access_api.dart';
-import 'package:fullstack/model/city.dart';
+import 'package:fullstack/model/city_model.dart';
 import 'package:fullstack/util/components.dart';
 
-class InsertCity extends StatefulWidget {
-  const InsertCity({Key? key}) : super(key: key);
+class CityRegistration extends StatefulWidget {
+  const CityRegistration({Key? key}) : super(key: key);
 
   @override
-  State<InsertCity> createState() => _InsertCityState();
+  State<CityRegistration> createState() => _CityRegistrationState();
 }
 
-class _InsertCityState extends State<InsertCity> {
+class _CityRegistrationState extends State<CityRegistration> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
   TextEditingController txtCity = TextEditingController();
   TextEditingController txtUf = TextEditingController();
@@ -20,7 +20,7 @@ class _InsertCityState extends State<InsertCity> {
   Widget build(BuildContext context) {
     dynamic args = {};
     if (ModalRoute.of(context)?.settings.arguments != null) {
-      args = ModalRoute.of(context)?.settings.arguments as City;
+      args = ModalRoute.of(context)?.settings.arguments as CityModel;
       if (args.id > -1) {
         txtCity.text = args.name;
         txtUf.text = args.uf;
@@ -28,15 +28,15 @@ class _InsertCityState extends State<InsertCity> {
     }
 
     register() {
-      City c = City(0, txtCity.text, txtUf.text);
+      CityModel c = CityModel(0, txtCity.text, txtUf.text);
       AccessApi().insertCity(c.toJson());
-      Navigator.of(context).pushReplacementNamed('/lista-cidades');
+      Navigator.of(context).pushReplacementNamed('/lista-de-cidades');
     }
 
     edit() {
-      City c = City(args.id, txtCity.text, txtUf.text);
+      CityModel c = CityModel(args.id, txtCity.text, txtUf.text);
       AccessApi().editCity(c.toJson(), "${c.id}");
-      Navigator.of(context).pushReplacementNamed('/lista-cidades');
+      Navigator.of(context).pushReplacementNamed('/lista-de-cidades');
     }
 
     home() {
@@ -49,7 +49,7 @@ class _InsertCityState extends State<InsertCity> {
           key: formController,
           child: Column(
             children: [
-              if (args is! City) ...[
+              if (args is! CityModel) ...[
                 Components().createTextInput(
                     TextInputType.text, "Cidade", txtCity, "Informe a cidade"),
                 Components().createTextInput(

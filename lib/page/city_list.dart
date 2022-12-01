@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fullstack/api/access_api.dart';
-import 'package:fullstack/model/city.dart';
+import 'package:fullstack/model/city_model.dart';
 import 'package:fullstack/util/components.dart';
 
 class CityList extends StatefulWidget {
@@ -13,7 +13,7 @@ class CityList extends StatefulWidget {
 class _CityListState extends State<CityList> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
   TextEditingController txtUf = TextEditingController();
-  List<City> list = [];
+  List<CityModel> list = [];
   bool checkSpecialField = false;
 
   @override
@@ -23,7 +23,7 @@ class _CityListState extends State<CityList> {
     }
 
     listAll() async {
-      List<City> cities = await AccessApi().listCities();
+      List<CityModel> cities = await AccessApi().listCities();
       setState(() {
         list = cities;
       });
@@ -31,7 +31,7 @@ class _CityListState extends State<CityList> {
 
     listCityByUf() async {
       if (txtUf.text != '') {
-        List<City> cities = await AccessApi().listCitiesByUf(txtUf.text);
+        List<CityModel> cities = await AccessApi().listCitiesByUf(txtUf.text);
         setState(() {
           list = cities;
         });
@@ -64,7 +64,7 @@ class _CityListState extends State<CityList> {
       await listAll();
     }
 
-    editCity(City c) {
+    editCity(CityModel c) {
       Navigator.of(context)
           .pushReplacementNamed('/cadastra-cidade', arguments: c);
     }

@@ -1,21 +1,21 @@
-import 'city.dart';
+import 'city_model.dart';
 
-class Clientt {
+class ClientModel {
   int id;
   String name;
   String gender;
   int age;
-  City city;
+  CityModel city;
 
-  Clientt(this.id, this.name, this.gender, this.age, this.city);
+  ClientModel(this.id, this.name, this.gender, this.age, this.city);
 
-  factory Clientt.fromJson(dynamic json) {
-    return Clientt(
+  factory ClientModel.fromJson(dynamic json) {
+    return ClientModel(
         json["id"] as int,
         json["name"] as String,
         json["gender"] as String,
         json["age"] as int,
-        City.fromJson(json["city"]));
+        CityModel.fromJson(json["city"]));
   }
 
   Map<String, dynamic> toJson() => {

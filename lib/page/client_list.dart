@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:fullstack/api/access_api.dart';
-import 'package:fullstack/model/clientt.dart';
+import 'package:fullstack/model/client_model.dart';
 import 'package:fullstack/util/components.dart';
 
-class Query extends StatefulWidget {
-  const Query({super.key});
+class ClientList extends StatefulWidget {
+  const ClientList({super.key});
 
   @override
-  State<Query> createState() => _QueryState();
+  State<ClientList> createState() => _ClientListState();
 }
 
-class _QueryState extends State<Query> {
+class _ClientListState extends State<ClientList> {
   GlobalKey<FormState> formController = GlobalKey<FormState>();
-  List<Clientt> list = [];
+  List<ClientModel> list = [];
   TextEditingController txtCity = TextEditingController();
   bool checkSpecialField = false;
 
   listAll() async {
-    List<Clientt> clients = await AccessApi().listClients();
+    List<ClientModel> clients = await AccessApi().listClients();
     setState(() {
       list = clients;
     });
@@ -36,7 +36,7 @@ class _QueryState extends State<Query> {
 
     listClientsByCity() async {
       if (txtCity.text != '') {
-        List<Clientt> clients =
+        List<ClientModel> clients =
             await AccessApi().listClientsByCity(txtCity.text);
         setState(() {
           list = clients;
@@ -61,8 +61,8 @@ class _QueryState extends State<Query> {
       }
     }
 
-    editClient(Clientt c) {
-      Navigator.of(context).pushReplacementNamed('/cadastro', arguments: c);
+    editClient(ClientModel c) {
+      Navigator.of(context).pushReplacementNamed('/cadastrar-cliente', arguments: c);
     }
 
     return Scaffold(
@@ -100,7 +100,7 @@ class _QueryState extends State<Query> {
                       elevation: 6,
                       margin: const EdgeInsets.all(20),
                       child: Components().createItemClient(
-                          list[index], editClient, deleteClient),
+                          list[index], editClient, deleteClient, context),
                     );
                   },
                 ),

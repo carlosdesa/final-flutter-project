@@ -1,12 +1,12 @@
-class City {
+class CityModel {
   int id;
   String name;
   String uf;
 
-  City(this.id, this.name, this.uf);
+  CityModel(this.id, this.name, this.uf);
 
-  factory City.fromJson(dynamic json) {
-    return City(
+  factory CityModel.fromJson(dynamic json) {
+    return CityModel(
         json["id"] as int, json["name"] as String, json["uf"] as String);
   }
 
