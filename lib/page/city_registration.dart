@@ -60,18 +60,18 @@ class _CityRegistrationState extends State<CityRegistration> {
     }
 
     return Scaffold(
-      appBar: Components().createAppBar(
-          "CityClient Creator", home, insertClient, insertCity),
+      appBar: Components()
+          .createAppBar("CityClient Creator", home, insertClient, insertCity),
       body: Form(
           key: formController,
           child: Column(
             children: [
+              Icon(Icons.add_location_alt, size: 170),
               if (args is! CityModel) ...[
                 Components().createTextInput(
                     TextInputType.text, "Cidade", txtCity, "Informe a cidade"),
                 Components().createTextInput(
-                    TextInputType.text
-                    , "UF", txtUf, "Informe a uf"),
+                    TextInputType.text, "UF", txtUf, "Informe a uf"),
                 Components().createButton(formController, register, "cadastrar")
               ] else ...[
                 Components().createTextInput(

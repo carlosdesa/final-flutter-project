@@ -47,7 +47,7 @@ class _ClientRegistrationState extends State<ClientRegistration> {
       Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
     }
 
-   home() {
+    home() {
       Navigator.of(context).pushReplacementNamed('/home');
     }
 
@@ -68,12 +68,13 @@ class _ClientRegistrationState extends State<ClientRegistration> {
     }
 
     return Scaffold(
-      appBar: Components().createAppBar(
-          "CityClient Creator", home, insertClient, insertCity),
+      appBar: Components()
+          .createAppBar("CityClient Creator", home, insertClient, insertCity),
       body: Form(
           key: formController,
           child: Column(
             children: [
+              Icon(Icons.person_add, size: 170),
               if (args is! ClientModel) ...[
                 Components().createTextInput(
                     TextInputType.text, "Nome", txtName, "Informe o nome"),
@@ -90,7 +91,7 @@ class _ClientRegistrationState extends State<ClientRegistration> {
                 Center(child: GenderRadioOptions(controller: txtGender)),
                 Center(child: ComboBoxCity(controller: txtCity)),
                 Components().createButton(formController, edit, "Atualizar")
-              ]
+              ],
             ],
           )),
     );
