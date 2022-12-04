@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fullstack/model/city_model.dart';
 
 import '../model/client_model.dart';
 
 class Components {
-  createAppBar(text, action) {
+  createAppBar(text, homeAction, addClientAction, addCityAction) {
     return AppBar(
       title: createText(text),
-      centerTitle: true,
+      // centerTitle: true,
       actions: <Widget>[
-        IconButton(onPressed: action, icon: const Icon(Icons.home))
+        IconButton(onPressed: homeAction, icon: const Icon(Icons.home)),
+        IconButton(
+            onPressed: addClientAction, icon: const Icon(Icons.person_add)),
+        IconButton(
+            onPressed: addCityAction, icon: const Icon(Icons.add_location_alt))
       ],
     );
   }
@@ -33,17 +38,20 @@ class Components {
 
   createTextInput(keyboardType, label, controller, validationMessage) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(20.0),
       child: TextFormField(
         keyboardType: keyboardType,
+        inputFormatters: TextInputType.number == keyboardType
+            ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+            : null,
         decoration: InputDecoration(
           labelText: label,
           labelStyle: const TextStyle(
-            fontSize: 20,
+            fontSize: 14,
           ),
         ),
         textAlign: TextAlign.left,
-        style: const TextStyle(fontSize: 30),
+        style: const TextStyle(fontSize: 20),
         controller: controller,
         validator: (value) {
           if (label != 'Uf' && label != 'Cidade' && value!.isEmpty) {

@@ -29,7 +29,7 @@ class _ComboBoxCityState extends State<ComboBoxCity> {
         if (snapshot.hasData && snapshot.data != null) {
           List<CityModel> cities = snapshot.data;
           return Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(20.0),
               child: DropdownButton(
                 isExpanded: true,
                 value: citySelected,

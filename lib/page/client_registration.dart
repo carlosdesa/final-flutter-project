@@ -47,12 +47,29 @@ class _ClientRegistrationState extends State<ClientRegistration> {
       Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
     }
 
-    home() {
+   home() {
       Navigator.of(context).pushReplacementNamed('/home');
     }
 
+    insertClient() {
+      Navigator.of(context).pushReplacementNamed('/cadastrar-cliente');
+    }
+
+    listClients() {
+      Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
+    }
+
+    insertCity() {
+      Navigator.of(context).pushReplacementNamed('/cadastra-cidade');
+    }
+
+    listCities() {
+      Navigator.of(context).pushReplacementNamed('/lista-de-cidades');
+    }
+
     return Scaffold(
-      appBar: Components().createAppBar("Utilização de API", home),
+      appBar: Components().createAppBar(
+          "CityClient Creator", home, insertClient, insertCity),
       body: Form(
           key: formController,
           child: Column(

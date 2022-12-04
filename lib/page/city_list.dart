@@ -16,19 +16,21 @@ class _CityListState extends State<CityList> {
   List<CityModel> list = [];
   bool checkSpecialField = false;
 
+  listAll() async {
+    List<CityModel> cities = await AccessApi().listCities();
+    setState(() {
+      list = cities;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    listAll();
+  }
+
   @override
   Widget build(BuildContext context) {
-    home() {
-      Navigator.of(context).pushReplacementNamed('/home');
-    }
-
-    listAll() async {
-      List<CityModel> cities = await AccessApi().listCities();
-      setState(() {
-        list = cities;
-      });
-    }
-
+    int _selectedIndex = 2;
     listCityByUf() async {
       if (txtUf.text != '') {
         List<CityModel> cities = await AccessApi().listCitiesByUf(txtUf.text);
@@ -81,8 +83,66 @@ class _CityListState extends State<CityList> {
       }
     }
 
+    home() {
+      Navigator.of(context).pushReplacementNamed('/home');
+    }
+
+    insertClient() {
+      Navigator.of(context).pushReplacementNamed('/cadastrar-cliente');
+    }
+
+    listClients() {
+      Navigator.of(context).pushReplacementNamed('/lista-de-clientes');
+    }
+
+    insertCity() {
+      Navigator.of(context).pushReplacementNamed('/cadastra-cidade');
+    }
+
+    listCities() {
+      Navigator.of(context).pushReplacementNamed('/lista-de-cidades');
+    }
+
     return Scaffold(
-      appBar: Components().createAppBar("Utilização de API", home),
+      appBar: Components()
+          .createAppBar("CityClient Creator", home, insertClient, insertCity),
+      bottomNavigationBar: BottomNavigationBar(
+        iconSize: 20,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people),
+            label: 'Lista de Clientes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_city),
+            label: 'Lista de Cidades',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Color.fromARGB(255, 0, 85, 255),
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              home();
+              break;
+            case 1:
+              listClients();
+              break;
+            case 2:
+              listCities();
+              break;
+          }
+          setState(
+            () {
+              _selectedIndex = index;
+            },
+          );
+        },
+      ),
       body: Form(
           key: formController,
           child: Column(
@@ -111,7 +171,7 @@ class _CityListState extends State<CityList> {
                   itemBuilder: (context, index) {
                     return Card(
                       elevation: 6,
-                      margin: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.only(bottom: 5, top: 5, left: 10, right: 10),
                       child: Components().createItemCity(
                           list[index], editCity, deleteCity, context),
                     );

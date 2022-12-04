@@ -6,6 +6,8 @@ import 'package:fullstack/page/client_list.dart';
 import 'package:fullstack/page/client_registration.dart';
 import 'package:fullstack/util/theme.dart';
 
+import 'page/intro.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -23,8 +25,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: MyTheme().createTheme(),
-      initialRoute: '/home',
+      initialRoute: '/intro',
       routes: {
+        '/intro': (context) => const Intro(),
         '/home': (context) => const Home(),
         '/cadastrar-cliente': (context) => const ClientRegistration(),
         '/lista-de-clientes': (context) => const ClientList(),
